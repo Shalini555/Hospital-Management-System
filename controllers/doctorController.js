@@ -49,7 +49,7 @@ const saveDoctor = async (req, res, next) => {
         return next(new HttpError('Invalid inputs! Please check again.', 422));
     }
 
-    const { name, email, phone, fee, age, speciality, address, degree, salary,availbleTime, typeavailbleTime, dateOfJoin ,gender } = req.body;
+    const { name, email, phone, fee, age, speciality, address, degree, salary,availbleTime, dateOfJoin ,gender } = req.body;
 
     let existingDoctor;
     try{
@@ -84,7 +84,6 @@ const saveDoctor = async (req, res, next) => {
         degree, 
         salary, 
         availbleTime, 
-        typeavailbleTime,
         dateOfJoin,
         gender
     });
@@ -98,6 +97,7 @@ const saveDoctor = async (req, res, next) => {
       });
 };
 
+// get all doctor details
 const getAllDoctors = async (req, res) => {
   await Doctor.find({})
     .then(data => {
@@ -108,6 +108,7 @@ const getAllDoctors = async (req, res) => {
     });
 }
 
+// get single doctor details
 const getSingleDoctor = async (req, res) => {
   await Doctor.findById(req.params.id)
     .then(data => {
@@ -118,6 +119,7 @@ const getSingleDoctor = async (req, res) => {
     });
 }
 
+// update Doctor details
 const updateDoctor = async (req, res) => {
   console.log(req.body)
   if(!req.body){
@@ -137,6 +139,21 @@ const updateDoctor = async (req, res) => {
   
 }
 
+// Delete Doctor details
+const deleteDoctor = async (req, res) => {
+  try {
+    const doctor = await Doctor.findOne({ _id: req.params.id })
+    if (!doctor) {
+      return res.status(422).json({ error: "doctor not found" });
+    }
+
+    await Doctor.deleteOne({ _id: req.params.id });
+    res.json({ message: "Doctor deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 
 
@@ -145,3 +162,4 @@ exports.saveDoctor = saveDoctor;
 exports.getAllDoctors = getAllDoctors;
 exports.getSingleDoctor = getSingleDoctor;
 exports.updateDoctor = updateDoctor;
+exports.deleteDoctor = deleteDoctor;
