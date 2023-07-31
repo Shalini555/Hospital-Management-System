@@ -14,6 +14,7 @@ const config = require("./configure.js");
 
 const userRoute = require("./Route/user.router");
 const companyRoute = require("./Route/company.router");
+const doctorRoute = require("./Route/doctor.route.js");
 
 mongoose.Promise = global.Promise;
 mongoose
@@ -41,6 +42,7 @@ app.use(
 
 app.use("/company", companyRoute);
 app.use("/user", userRoute);
+app.use("/doctor", doctorRoute);
 
 app.listen(PORT, function () {
   console.log("Server is running on Port:", PORT);
