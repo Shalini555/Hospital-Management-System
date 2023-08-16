@@ -5,7 +5,12 @@ import Layout from "../Layout";
 import done from "../../../assets/images/done.png";
 import warning from "../../../assets/images/warning.png";
 import { Box, Button, styled } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import HeartDiseasePredictionService from "../../../app/services/heart-disease-prediction-service";
+import { useSelector } from "react-redux";
+import processingData from "../../../assets/images/processing-data.png";
+import PositiveResult from "./PositiveResult";
+import { useNavigate } from "react-router-dom";
 
 const StyledText = styled("span")(
   `
@@ -21,7 +26,45 @@ font-weight: 400;
 );
 
 const Result = () => {
-  const [result, setResult] = useState(true);
+  const [result, setResult] = useState({
+    prediction: true,
+    urgentStatus: false,
+  });
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const heartDiseasePredictionState = useSelector(
+    (state) => state.heartDiseasePrediction
+  );
+
+  const getHeartDiseasePrediction = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await HeartDiseasePredictionService.predictHeartDisease({
+        patientId: 1,
+        age: heartDiseasePredictionState.age,
+        sex: heartDiseasePredictionState.gender,
+        chest_pain_type: heartDiseasePredictionState.chestPainType,
+        resting_bp: heartDiseasePredictionState.restingBloodPressure,
+        cholesterol: heartDiseasePredictionState.cholestrol,
+        fasting_bs: heartDiseasePredictionState.fastingBloodSugar,
+        resting_ecg: heartDiseasePredictionState.restingEcg,
+        max_hr: heartDiseasePredictionState.maxHeartRate,
+        exercise_angina: heartDiseasePredictionState.exerciseAngina,
+        oldpeak: heartDiseasePredictionState.oldPeak,
+        st_slope: heartDiseasePredictionState.stSlope,
+      });
+      setResult(response);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [heartDiseasePredictionState, setResult]);
+
+  useEffect(() => {
+    getHeartDiseasePrediction();
+  }, [getHeartDiseasePrediction]);
 
   const Negative = (
     <>
@@ -41,21 +84,23 @@ const Result = () => {
           mb: 2,
           fontWeight: "bold",
         }}
+        onClick={() => navigate("/patient-portal/channel-doctor/step-01")}
       >
         Channel Doctor
       </Button>
     </>
   );
-  const Positive = (
+
+  const Loading = (
     <>
       <HeadingText text="Heart disease prediction" />
-      <img src={warning} alt="" width={"185px"} />
+      <img src={processingData} alt="" width={"185px"} />
       <div>
-        <StyledText fontSize="24px">You are in a risky zone.</StyledText>
+        <StyledText fontSize="24px">Loading results</StyledText>
       </div>
       <Box my={1}>
         <StyledText fontSize="16px">
-          Channel a doctor to make sure everything is going well.
+          Please wait, we are processing your results.
         </StyledText>
       </Box>
       <Button
@@ -64,6 +109,7 @@ const Result = () => {
           mb: 2,
           fontWeight: "bold",
         }}
+        disabled
       >
         Channel Doctor
       </Button>
@@ -81,17 +127,13 @@ const Result = () => {
         }}
       >
         <BlueAcentCard>
-          <Button
-            sx={{
-              position: "absolute",
-              top: "10px",
-            }}
-            onClick={() => setResult(!result)}
-          >
-            sw
-          </Button>
-
-          {result ? Negative : Positive}
+          {loading ? (
+            Loading
+          ) : result?.prediction ? (
+            <PositiveResult urgentStatus={result?.urgentStatus} />
+          ) : (
+            Negative
+          )}
         </BlueAcentCard>
       </div>
     </Layout>

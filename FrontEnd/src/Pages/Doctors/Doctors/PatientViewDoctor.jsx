@@ -9,14 +9,23 @@ import { IconButton, Typography } from "@mui/material";
 import useRequest from "../../../hooks/use-request";
 import DoctorService from "../../../app/services/doctor-service";
 import { useCallback } from "react";
-import { CalendarMonth, Delete, Edit } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import { showSystemAlert } from "../../../app/services/alertServices";
+import { useNavigate } from "react-router-dom";
 
 export default function PatientViewDoctor() {
+  const navigate = useNavigate();
   const getAllDoctors = useCallback(async () => {
     const response = await DoctorService.getAllDoctors();
     return response.data;
   }, []);
+
+  const handleEditDoctorClick = useCallback(
+    (doctor) => {
+      navigate("/addDoctor", { state: { doctor: doctor } });
+    },
+    [navigate]
+  );
 
   const { loading, error, data, setRefresh } = useRequest({
     requestFn: getAllDoctors,
@@ -57,7 +66,6 @@ export default function PatientViewDoctor() {
               Name
             </TableCell>
             <TableCell align="center">Speciality</TableCell>
-            <TableCell align="center">Available</TableCell>
             <TableCell align="center">Fee</TableCell>
             <TableCell align="center">Phone</TableCell>
             <TableCell align="center">Gender</TableCell>
@@ -74,12 +82,16 @@ export default function PatientViewDoctor() {
                 {doctorData?.name}
               </TableCell>
               <TableCell align="center">{doctorData?.speciality}</TableCell>
-              <TableCell align="center">{doctorData?.availbleTime}</TableCell>
               <TableCell align="center">{doctorData?.fee}</TableCell>
               <TableCell align="center">{doctorData?.phone}</TableCell>
               <TableCell align="center">{doctorData?.gender}</TableCell>
               <TableCell align="center">
-                <IconButton title="Edit doctor">
+                <IconButton
+                  title="Edit doctor"
+                  onClick={() => {
+                    handleEditDoctorClick(doctorData);
+                  }}
+                >
                   <Edit />
                 </IconButton>
                 <IconButton
@@ -89,9 +101,6 @@ export default function PatientViewDoctor() {
                   }}
                 >
                   <Delete />
-                </IconButton>
-                <IconButton title="Place appointment">
-                  <CalendarMonth />
                 </IconButton>
               </TableCell>
             </TableRow>
