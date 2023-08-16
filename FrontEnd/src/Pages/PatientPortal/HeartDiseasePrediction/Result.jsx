@@ -41,7 +41,7 @@ const Result = () => {
     try {
       setLoading(true);
       const response = await HeartDiseasePredictionService.predictHeartDisease({
-        patientId: 1,
+        patientid: 1,
         age: heartDiseasePredictionState.age,
         sex: heartDiseasePredictionState.gender,
         chest_pain_type: heartDiseasePredictionState.chestPainType,
