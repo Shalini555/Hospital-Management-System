@@ -12,9 +12,16 @@ const mongoose = require("mongoose");
 
 const config = require("./configure.js");
 
-const userRoute = require("./Route/user.router");
-const companyRoute = require("./Route/company.router");
+const paitentRoute = require("./Route/paitent.router.js");
+const labReportRoute = require("./Route/labReports.router.js");
 const doctorRoute = require("./Route/doctor.route.js");
+const labAssistantRoute = require("./Route/labAssistants.router.js");
+const bedRoute = require("./Route/bed.router.js");
+const prediction = require("./Route/detection.router.js");
+const appoiment = require("./Route/appointment.router.js");
+const labReportBills = require("./Route/labReportsBill.router.js");
+const bedBills = require("./Route/bedbill.router.js");
+const userRoutes = require("./Route/admin.router.js");
 
 mongoose.Promise = global.Promise;
 mongoose
@@ -40,9 +47,16 @@ app.use(
   })
 );
 
-app.use("/company", companyRoute);
-app.use("/user", userRoute);
+app.use("/report", labReportRoute);
+app.use("/patient", paitentRoute);
 app.use("/doctor", doctorRoute);
+app.use("/labAssistant", labAssistantRoute);
+app.use("/bed", bedRoute);
+app.use("/detection", prediction);
+app.use("/appoinment", appoiment);
+app.use("/labReportBill", labReportBills);
+app.use("/bedBill", bedBills);
+app.use("/user", userRoutes);
 
 app.listen(PORT, function () {
   console.log("Server is running on Port:", PORT);

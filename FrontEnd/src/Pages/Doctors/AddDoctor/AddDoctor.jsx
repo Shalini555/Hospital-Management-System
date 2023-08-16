@@ -12,8 +12,8 @@ import {
   MenuItem,
   OutlinedInput,
 } from "@mui/material";
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import Calender from "../../Shared/Calender/Calender";
 import { Controller, useForm } from "react-hook-form";
@@ -45,6 +45,8 @@ const AddDoctor = () => {
   const theme = useTheme();
   const [personName, setPersonName] = useState([]);
   const [date, setDate] = useState(new Date().toDateString());
+  const location = useLocation();
+  const doctorToBeEdited = location.state?.doctor;
   // const [image, setImage] = useState(null);
   const handleChange = (event) => {
     const {
@@ -87,6 +89,30 @@ const AddDoctor = () => {
     }
   };
 
+  useEffect(() => {
+    if (doctorToBeEdited) {
+      setValue("name", doctorToBeEdited.name);
+      setValue("email", doctorToBeEdited.email);
+      setValue("userName", doctorToBeEdited.userName);
+      setValue("gender", doctorToBeEdited.gender);
+      setPersonName([doctorToBeEdited.degree]);
+      setValue("speciality", doctorToBeEdited.speciality);
+      setValue("phone", doctorToBeEdited.phone);
+      setDate(doctorToBeEdited.dateOfJoin);
+      setValue("address", doctorToBeEdited.address);
+      setValue("age", doctorToBeEdited.age);
+      setValue("fee", doctorToBeEdited.fee);
+      setValue("salary", doctorToBeEdited.salary);
+      setValue("sunAvailbleTime", doctorToBeEdited.sunAvailbleTime);
+      setValue("monAvailbleTime", doctorToBeEdited.monAvailbleTime);
+      setValue("tueAvailbleTime", doctorToBeEdited.tueAvailbleTime);
+      setValue("wensAvailbleTime", doctorToBeEdited.wensAvailbleTime);
+      setValue("thusAvailbleTime", doctorToBeEdited.thusAvailbleTime);
+      setValue("friAvailbleTime", doctorToBeEdited.friAvailbleTime);
+      setValue("satAvailbleTime", doctorToBeEdited.satAvailbleTime);
+    }
+  }, [doctorToBeEdited, setValue]);
+
   return (
     <Box
       style={{
@@ -95,15 +121,10 @@ const AddDoctor = () => {
         background: "#fff",
       }}
     >
-      <Box style={{ display: "flex" }}>
-        <Button variant="contained">
-          <NavLink
-            to="/doctors"
-            style={{ textDecoration: "none", width: "100%", color: "#fff" }}
-          >
-            Doctors List
-          </NavLink>
-        </Button>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+          {doctorToBeEdited ? "Edit Doctor" : "Add Doctor"}
+        </Typography>
       </Box>
       <hr></hr>
       <Grid
@@ -124,7 +145,7 @@ const AddDoctor = () => {
         <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
           <TextField
             id="standard-basic"
-            label="Enter name"
+            placeholder="Enter name"
             name="name"
             required
             fullWidth
@@ -143,11 +164,70 @@ const AddDoctor = () => {
         <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
           <TextField
             id="standard-basic"
-            label="Enter email"
+            placeholder="Enter email"
             name="email"
             required
             fullWidth
             {...register("email", {
+              // required: {
+              //   value: true,
+              //   message: "*Email is required",
+              // },
+            })}
+          />
+        </Grid>
+
+        {/* UserName */}
+        <Grid item xs={12} md={4}>
+          <Typography variant="OVERLINE TEXT">UserName</Typography>
+        </Grid>
+        <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
+          <TextField
+            id="standard-basic"
+            placeholder="Enter userName"
+            name="userName"
+            required
+            fullWidth
+            {...register("userName", {
+              // required: {
+              //   value: true,
+              //   message: "*Email is required",
+              // },
+            })}
+          />
+        </Grid>
+        {/* Password */}
+        <Grid item xs={12} md={4}>
+          <Typography variant="OVERLINE TEXT">Password</Typography>
+        </Grid>
+
+        <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
+          <TextField
+            id="standard-basic"
+            placeholder="Enter password"
+            name="password"
+            required
+            fullWidth
+            {...register("password", {
+              // required: {
+              //   value: true,
+              //   message: "*Email is required",
+              // },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Typography variant="OVERLINE TEXT">Confirm Password</Typography>
+        </Grid>
+
+        <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
+          <TextField
+            id="standard-basic"
+            placeholder="Enter password"
+            name="conpass"
+            required
+            fullWidth
+            {...register("conpass", {
               // required: {
               //   value: true,
               //   message: "*Email is required",
@@ -162,7 +242,7 @@ const AddDoctor = () => {
         <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
           <TextField
             id="standard-basic"
-            label="Enter number"
+            placeholder="Enter number"
             name="phone"
             required
             fullWidth
@@ -181,7 +261,7 @@ const AddDoctor = () => {
         <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
           <TextField
             id="standard-basic"
-            label="Set Fees"
+            placeholder="Set Fees"
             name="fee"
             required
             fullWidth
@@ -200,7 +280,7 @@ const AddDoctor = () => {
         <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
           <TextField
             id="standard-basic"
-            label="Set Age"
+            placeholder="Set Age"
             name="age"
             required
             fullWidth
@@ -219,7 +299,7 @@ const AddDoctor = () => {
         <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
           <TextField
             id="standard-basic"
-            label="Speciality"
+            placeholder="Speciality"
             name="speciality"
             required
             fullWidth
@@ -238,8 +318,7 @@ const AddDoctor = () => {
         <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
           <TextField
             id="standard-basic"
-            label="Enter Address"
-            variant="standard"
+            placeholder="Enter Address"
             name="address"
             multiline
             rows={5}
@@ -254,7 +333,7 @@ const AddDoctor = () => {
         </Grid>
         {/* Degrees */}
         <Grid item xs={12} md={4}>
-          <Typography variant="OVERLINE TEXT">Choose Degrees</Typography>
+          <Typography variant="OVERLINE TEXT">Choose Degree</Typography>
         </Grid>
         <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
           <Box>
@@ -262,11 +341,12 @@ const AddDoctor = () => {
               labelId="demo-multiple-chip-label"
               id="demo-multiple-chip"
               name="degrees"
+              placeholder="Select Degrees"
               value={personName}
               onChange={handleChange}
               variant="standard"
               fullWidth
-              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              input={<OutlinedInput id="select-multiple-chip" />}
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {selected.map((value) => (
@@ -276,9 +356,6 @@ const AddDoctor = () => {
               )}
               MenuProps={MenuProps}
             >
-              <MenuItem disabled value="">
-                <em>You Can Choose Multiple Degrees </em>
-              </MenuItem>
               {degreeList.map((name) => (
                 <MenuItem
                   key={name}
@@ -298,7 +375,7 @@ const AddDoctor = () => {
         <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
           <TextField
             id="standard-basic"
-            label="Enter salary"
+            placeholder="Enter salary"
             name="salary"
             // required
             fullWidth
@@ -314,14 +391,111 @@ const AddDoctor = () => {
         <Grid item xs={12} md={4}>
           <Typography variant="OVERLINE TEXT">Available Time</Typography>
         </Grid>
-        <Grid item xs={12} md={8} sx={{ marginLeft: { md: "-5rem" } }}>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          sx={{ marginLeft: { md: "-5rem" } }}
+          display={"flex"}
+          gap={2}
+        >
           <TextField
             id="standard-basic"
-            label="Eg: 8pm-10pm"
+            label="Sunday"
             name="availbleTime"
             required
             fullWidth
-            {...register("availbleTime", {
+            {...register("sunAvailbleTime", {
+              // required: {
+              //   value: true,
+              //   message: "*Availble time is required",
+              // },
+            })}
+          />
+          <TextField
+            id="standard-basic"
+            label="Monday"
+            name="availbleTime"
+            required
+            fullWidth
+            {...register("monAvailbleTime", {
+              // required: {
+              //   value: true,
+              //   message: "*Availble time is required",
+              // },
+            })}
+          />
+          <TextField
+            id="standard-basic"
+            label="Tuesday"
+            name="availbleTime"
+            required
+            fullWidth
+            {...register("tueAvailbleTime", {
+              // required: {
+              //   value: true,
+              //   message: "*Availble time is required",
+              // },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Typography variant="OVERLINE TEXT"></Typography>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          sx={{ marginLeft: { md: "-5rem" } }}
+          display={"flex"}
+          gap={2}
+        >
+          <TextField
+            id="standard-basic"
+            label="Wednesday"
+            name="availbleTime"
+            required
+            fullWidth
+            {...register("wensAvailbleTime", {
+              // required: {
+              //   value: true,
+              //   message: "*Availble time is required",
+              // },
+            })}
+          />
+          <TextField
+            id="standard-basic"
+            label="Thursday"
+            name="availbleTime"
+            required
+            fullWidth
+            {...register("thusAvailbleTime", {
+              // required: {
+              //   value: true,
+              //   message: "*Availble time is required",
+              // },
+            })}
+          />
+          <TextField
+            id="standard-basic"
+            label="Friday"
+            name="availbleTime"
+            required
+            fullWidth
+            {...register("friAvailbleTime", {
+              // required: {
+              //   value: true,
+              //   message: "*Availble time is required",
+              // },
+            })}
+          />
+          <TextField
+            id="standard-basic"
+            label="Saturday"
+            name="availbleTime"
+            required
+            fullWidth
+            {...register("satAvailbleTime", {
               // required: {
               //   value: true,
               //   message: "*Availble time is required",

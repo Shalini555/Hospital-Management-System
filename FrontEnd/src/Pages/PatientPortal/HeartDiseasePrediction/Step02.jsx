@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   FormControl,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -15,6 +16,8 @@ import Layout from "../Layout";
 import Progress from "./Progress";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setHeartDiseasePrediction } from "../../../reducers/heartDiseasePredictionSlice";
 
 const StyledButton = styled(Button)(`
 border-radius: 7px;
@@ -28,10 +31,33 @@ color: #fff;
 
 const Step02 = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const heartDiseasePredictionState = useSelector(
+    (state) => state.heartDiseasePrediction
+  );
+
   const [chestPainType, setChestPainType] = useState("NO_SELECTION");
+  const [cholestrol, setCholestrol] = useState("");
+  const [fastingBloodSugar, setFastingBloodSugar] = useState("");
+
   const handleNextClick = useCallback(() => {
+    dispatch(
+      setHeartDiseasePrediction({
+        ...heartDiseasePredictionState,
+        chestPainType: chestPainType,
+        cholestrol: cholestrol,
+        fastingBloodSugar: fastingBloodSugar,
+      })
+    );
     navigate("/patient-portal/heart-disease-prediction/step-03");
-  }, [navigate]);
+  }, [
+    navigate,
+    chestPainType,
+    cholestrol,
+    fastingBloodSugar,
+    dispatch,
+    heartDiseasePredictionState,
+  ]);
 
   const handleChestPainTypeChange = useCallback((event) => {
     setChestPainType(event.target.value);
@@ -40,6 +66,19 @@ const Step02 = () => {
     navigate("/patient-portal/heart-disease-prediction/step-01");
   }, [navigate]);
 
+  const onChangeCholestrol = useCallback(
+    (event) => {
+      setCholestrol(event.target.value);
+    },
+    [setCholestrol]
+  );
+
+  const onChangeFastingBloodSugar = useCallback(
+    (event) => {
+      setFastingBloodSugar(event.target.value);
+    },
+    [setFastingBloodSugar]
+  );
   return (
     <Layout>
       <Header />
@@ -65,9 +104,10 @@ const Step02 = () => {
               onChange={handleChestPainTypeChange}
             >
               <MenuItem value={"NO_SELECTION"}>Please select</MenuItem>
-              <MenuItem value={"Angina"}>Angina</MenuItem>
-              <MenuItem value={"Heart attack"}>Heart attack</MenuItem>
-              <MenuItem value={"Aortic dissection"}>Aortic dissection</MenuItem>
+              <MenuItem value={"TA"}>Typical Angina</MenuItem>
+              <MenuItem value={"ATA"}>Atypical Angina</MenuItem>
+              <MenuItem value={"NAP"}>Non-Anginal Pain</MenuItem>
+              <MenuItem value={"ASY"}>Asymptomatic</MenuItem>
             </Select>
           </FormControl>
           <TextField
@@ -75,13 +115,28 @@ const Step02 = () => {
             variant="outlined"
             fullWidth
             sx={{ mt: 2 }}
+            value={cholestrol}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">mm/dl</InputAdornment>
+              ),
+            }}
+            onChange={onChangeCholestrol}
           />
-          <TextField
-            label="Fasting Bs"
-            variant="outlined"
-            fullWidth
-            sx={{ mt: 2 }}
-          />
+          <FormControl fullWidth sx={{ textAlign: "start", mt: 2 }}>
+            <InputLabel id="demo-simple-select-label">
+              Fasting Blood Sugar
+            </InputLabel>
+            <Select
+              value={fastingBloodSugar}
+              label="Fasting Blood Sugar"
+              onChange={onChangeFastingBloodSugar}
+            >
+              <MenuItem value={"NO_SELECTION"}>Please select</MenuItem>
+              <MenuItem value={"1"}>FastingBS &gt; 120 mg/dl</MenuItem>
+              <MenuItem value={"0"}>FastingBS &lt; 120 mg/dl</MenuItem>
+            </Select>
+          </FormControl>
 
           <Progress currentStep={1} />
           <Box

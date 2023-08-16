@@ -2,6 +2,8 @@ import Layout from "./Layout";
 import PatientChoiseCard from "./PatientChoiseCard";
 import doctor from "../../assets/images/doctor.png";
 import heart from "../../assets/images/heart.png";
+import bill from "../../assets/images/bill.png";
+import appointment from "../../assets/images/appointment.png";
 import Header from "./Header";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +19,10 @@ const Landing = () => {
     navigate("/patient-portal/heart-disease-prediction/step-01");
   }, [navigate]);
 
+  const handleAppointmentsClick = useCallback(() => {
+    navigate("/patient-portal/view-appointments");
+  }, [navigate]);
+
   return (
     <Layout>
       <Header />
@@ -29,13 +35,32 @@ const Landing = () => {
           gap: "6rem",
         }}
       >
+        <PatientChoiseCard onClick={handleHDPCardClick}>
+          <img src={heart} alt="check heart disease" />
+          <h4>Check Heart Disease</h4>
+        </PatientChoiseCard>
         <PatientChoiseCard onClick={handleCDClick}>
           <img src={doctor} alt="doctor" />
           <h4>Channel doctor</h4>
         </PatientChoiseCard>
-        <PatientChoiseCard onClick={handleHDPCardClick}>
-          <img src={heart} alt="doctor" />
-          <h4>Check Heart Disease</h4>
+
+        <PatientChoiseCard onClick={handleAppointmentsClick}>
+          <img
+            src={appointment}
+            alt="appointments"
+            width="100px"
+            style={{ marginTop: "8px" }}
+          />
+          <h4>View Appointments</h4>
+        </PatientChoiseCard>
+        <PatientChoiseCard onClick={handleAppointmentsClick}>
+          <img
+            src={bill}
+            alt="appointments"
+            width="100px"
+            style={{ marginTop: "3px" }}
+          />
+          <h4>View Bills</h4>
         </PatientChoiseCard>
       </div>
     </Layout>

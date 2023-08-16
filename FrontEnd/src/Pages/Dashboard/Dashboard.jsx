@@ -1,41 +1,30 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import LoginIcon from "@mui/icons-material/Login";
+import MenuIcon from "@mui/icons-material/Menu";
+import TreeView from "@mui/lab/TreeView";
+import { Container } from "@mui/material";
+import MuiAppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { NavLink } from "react-router-dom";
-import { FaMandalorian, FaRunning, FaUserNurse } from "react-icons/fa";
-import { AiOutlineFieldTime } from "react-icons/ai";
-import {
-  MdOutlinePersonAddAlt,
-  MdOutlinePersonRemoveAlt1,
-  MdOutlinePersonSearch,
-} from "react-icons/md";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
+import * as React from "react";
+import { BsCardChecklist } from "react-icons/bs";
+import { FaUserNurse } from "react-icons/fa";
+import { FcHome } from "react-icons/fc";
+import { MdOutlinePersonAddAlt } from "react-icons/md";
 import { TbBed, TbTestPipe } from "react-icons/tb";
-import { FcApproval, FcHome } from "react-icons/fc";
-import { Outlet } from "react-router-dom";
-import { Container } from "@mui/material";
-import {
-  BsCardChecklist,
-  BsPersonCheck,
-  BsPersonLinesFill,
-} from "react-icons/bs";
-import TreeView from "@mui/lab/TreeView";
-import TreeItem from "@mui/lab/TreeItem";
-
-import LoginIcon from "@mui/icons-material/Login";
+import { NavLink, Outlet } from "react-router-dom";
+import logo from "../../assets/images/hms-logo.png";
 
 const drawerWidth = 240;
 
@@ -167,11 +156,12 @@ export default function NewHeader() {
       >
         <DrawerHeader sx={{ display: "flex", justifyContent: "flex-start" }}>
           <Toolbar style={{ color: "#000" }}>
-            <Typography variant="h6" noWrap>
-              {" "}
-              SmartCare{" "}
-            </Typography>
-            <FaMandalorian style={{ fontSize: "1.5rem", marginLeft: "20px" }} />
+            <Typography noWrap>Cardiac Wing HMS</Typography>
+            <img
+              src={logo}
+              alt="logo"
+              style={{ width: "40px", marginLeft: "10px" }}
+            />
           </Toolbar>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
@@ -194,6 +184,7 @@ export default function NewHeader() {
             </ListItem>
           </NavLink>
 
+          {/* Doctor view for admin */}
           <ListItem
             disablePadding
             onClick={() => {
@@ -212,8 +203,6 @@ export default function NewHeader() {
             </ListItemButton>
           </ListItem>
 
-          {/* Doctor view for admin */}
-
           <TreeView
             style={{
               color: "#000",
@@ -223,16 +212,6 @@ export default function NewHeader() {
             }}
             aria-label="file system navigator"
             defaultExpanded={["1"]}
-            defaultCollapseIcon={
-              <div style={{ padding: ".3rem 0", visibility: "hidden" }}>
-                <FaUserNurse style={{ color: "#000", fontSize: "1.5rem" }} />
-              </div>
-            }
-            defaultExpandIcon={
-              <div style={{ padding: ".3rem 0", visibility: "hidden" }}>
-                <FaUserNurse style={{ color: "#000", fontSize: "1.5rem" }} />
-              </div>
-            }
             sx={{
               height: expandedNodeId === 1 ? 100 : 0,
               flexGrow: 1,
@@ -243,7 +222,11 @@ export default function NewHeader() {
           >
             <NavLink
               to="/doctors"
-              style={{ textDecoration: "none", width: "100%", color: "#000" }}
+              style={{
+                textDecoration: "none",
+                width: "100%",
+                color: "#000",
+              }}
             >
               <ListItem disablePadding>
                 <ListItemButton style={{ borderRadius: "0 40px 40px 0" }}>
@@ -259,27 +242,14 @@ export default function NewHeader() {
                 </ListItemButton>
               </ListItem>
             </NavLink>
-            {/* <NavLink
-              to="/approveDoctor"
-              style={{ textDecoration: "none", width: "100%", color: "#000" }}
-            >
-              <ListItem disablePadding>
-                <ListItemButton style={{ borderRadius: "0 40px 40px 0" }}>
-                  <ListItemIcon>
-                    <BsPersonLinesFill
-                      style={{ color: "#000", fontSize: "1.4rem" }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Approval"
-                    style={{ marginLeft: "-1rem" }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            </NavLink> */}
+
             <NavLink
               to="/addDoctor"
-              style={{ textDecoration: "none", width: "100%", color: "#000" }}
+              style={{
+                textDecoration: "none",
+                width: "100%",
+                color: "#000",
+              }}
             >
               <ListItem disablePadding>
                 <ListItemButton style={{ borderRadius: "0 40px 40px 0" }}>
@@ -295,44 +265,9 @@ export default function NewHeader() {
                 </ListItemButton>
               </ListItem>
             </NavLink>
-            {/* <NavLink
-              to="/deleteDoctor"
-              style={{ textDecoration: "none", width: "100%", color: "#000" }}
-            >
-              <ListItem disablePadding>
-                <ListItemButton style={{ borderRadius: "0 40px 40px 0" }}>
-                  <ListItemIcon>
-                    <MdOutlinePersonRemoveAlt1
-                      style={{ color: "#000", fontSize: "1.4rem" }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Delete Doctor"
-                    style={{ marginLeft: "-1rem" }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            </NavLink> */}
-            {/* <NavLink
-              to="/updateDoctor"
-              style={{ textDecoration: "none", width: "100%", color: "#000" }}
-            >
-              <ListItem disablePadding>
-                <ListItemButton style={{ borderRadius: "0 40px 40px 0" }}>
-                  <ListItemIcon>
-                    <MdOutlinePersonSearch
-                      style={{ color: "#000", fontSize: "1.4rem" }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Find Doctor"
-                    style={{ marginLeft: "-1rem" }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            </NavLink> */}
           </TreeView>
 
+          {/* Patient for Admin view  */}
           <ListItem
             disablePadding
             onClick={() => {
@@ -351,7 +286,6 @@ export default function NewHeader() {
             </ListItemButton>
           </ListItem>
 
-          {/* Patient for Admin view  */}
           <TreeView
             style={{
               color: "#000",
@@ -381,7 +315,11 @@ export default function NewHeader() {
           >
             <NavLink
               to="/patients"
-              style={{ textDecoration: "none", width: "100%", color: "#000" }}
+              style={{
+                textDecoration: "none",
+                width: "100%",
+                color: "#000",
+              }}
             >
               <ListItem disablePadding>
                 <ListItemButton style={{ borderRadius: "0 40px 40px 0" }}>
@@ -399,7 +337,11 @@ export default function NewHeader() {
             </NavLink>
             <NavLink
               to="/addPatient"
-              style={{ textDecoration: "none", width: "100%", color: "#000" }}
+              style={{
+                textDecoration: "none",
+                width: "100%",
+                color: "#000",
+              }}
             >
               <ListItem disablePadding>
                 <ListItemButton style={{ borderRadius: "0 40px 40px 0" }}>
@@ -432,7 +374,7 @@ export default function NewHeader() {
               <ListItemIcon>
                 <TbTestPipe style={{ color: "#000", fontSize: "1.5rem" }} />
               </ListItemIcon>
-              <ListItemText primary="Labs" />
+              <ListItemText primary="Lab Assistants" />
             </ListItemButton>
           </ListItem>
 
@@ -464,8 +406,12 @@ export default function NewHeader() {
             }}
           >
             <NavLink
-              to="/labs"
-              style={{ textDecoration: "none", width: "100%", color: "#000" }}
+              to="/all-lab-assistants"
+              style={{
+                textDecoration: "none",
+                width: "100%",
+                color: "#000",
+              }}
             >
               <ListItem disablePadding>
                 <ListItemButton style={{ borderRadius: "0 40px 40px 0" }}>
@@ -475,15 +421,19 @@ export default function NewHeader() {
                     />
                   </ListItemIcon>
                   <ListItemText
-                    primary="Lab List"
+                    primary="All Assistants"
                     style={{ marginLeft: "-1rem" }}
                   />
                 </ListItemButton>
               </ListItem>
             </NavLink>
             <NavLink
-              to="/addLab"
-              style={{ textDecoration: "none", width: "100%", color: "#000" }}
+              to="/add-lab-assistant"
+              style={{
+                textDecoration: "none",
+                width: "100%",
+                color: "#000",
+              }}
             >
               <ListItem disablePadding>
                 <ListItemButton style={{ borderRadius: "0 40px 40px 0" }}>
@@ -493,7 +443,7 @@ export default function NewHeader() {
                     />
                   </ListItemIcon>
                   <ListItemText
-                    primary="Add Lab"
+                    primary="Add Assistant"
                     style={{ marginLeft: "-1rem" }}
                   />
                 </ListItemButton>
@@ -501,19 +451,6 @@ export default function NewHeader() {
             </NavLink>
           </TreeView>
 
-          <NavLink
-            to="/Staffs"
-            style={{ textDecoration: "none", width: "100%", color: "#000" }}
-          >
-            <ListItem disablePadding>
-              <ListItemButton style={{ borderRadius: "0 40px 40px 0" }}>
-                <ListItemIcon>
-                  <FaRunning style={{ color: "#000", fontSize: "1.5rem" }} />
-                </ListItemIcon>
-                <ListItemText primary="Staffs" />
-              </ListItemButton>
-            </ListItem>
-          </NavLink>
           <NavLink
             to="/login"
             style={{ textDecoration: "none", width: "100%", color: "#000" }}
@@ -523,7 +460,7 @@ export default function NewHeader() {
                 <ListItemIcon>
                   <LoginIcon style={{ color: "#000", fontSize: "1.5rem" }} />
                 </ListItemIcon>
-                <ListItemText primary="Login" />
+                <ListItemText primary="Logout" />
               </ListItemButton>
             </ListItem>
           </NavLink>

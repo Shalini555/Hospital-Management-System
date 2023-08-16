@@ -13,12 +13,12 @@ const StyledDiv = styled("div")(`
   }
 `);
 
-const BlueAcentCard = ({ children }) => {
+const BlueAcentCardLogin = ({ children }) => {
   return <StyledDiv>{children}</StyledDiv>;
 };
 
-export default BlueAcentCard;
+export default BlueAcentCardLogin;
 
-BlueAcentCard.propTypes = {
+BlueAcentCardLogin.propTypes = {
   children: proptypes.node.isRequired,
 };
