@@ -32,6 +32,8 @@ import PatientLogin from "./Pages/PatientPortal/PatientLogin";
 import DoctorLogin from "./Pages/DoctorPortal/DoctorLogin";
 import LabAssistantLogin from "./Pages/LabAssistantPortal/LabAssistantLogin";
 import PatientRegistration from "./Pages/PatientPortal/PatientRegistration";
+import ViewBills from "./Pages/PatientPortal/ViewBills";
+import PayBill from "./Pages/PatientPortal/PayBills";
 
 function App() {
   return (
@@ -54,11 +56,13 @@ function App() {
 
           <Route path="/patient-portal">
             <Route path="landing" index element={<Landing />} />
+            <Route path="pay-bill" index element={<PayBill />} />
             <Route
               path="view-appointments"
               index
               element={<ViewAppointments />}
             />
+            <Route path="view-bills" index element={<ViewBills />} />
             <Route path="heart-disease-prediction">
               <Route path="step-01" element={<HDPStep01 />} />
               <Route path="step-02" element={<HDPStep02 />} />
