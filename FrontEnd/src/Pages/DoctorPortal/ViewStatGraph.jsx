@@ -143,7 +143,7 @@ const ViewStatGraph = ({ isOpen, setIsOpen, predictionData }) => {
 
         <Box>
           <ChartRow
-            title={"ST_SLOPE"}
+            title={"ST_Slope"}
             value={predictionData.sT_Slope}
             minValue={-2}
             maxValue={2}
@@ -204,13 +204,12 @@ const ViewStatGraph = ({ isOpen, setIsOpen, predictionData }) => {
           />
           <ChartRow
             title={"FastingBS"}
-            numericTitlePart={"(0.00)"}
             value={predictionData.fastingBS}
             minValue={-2}
             maxValue={2}
           />
           <ChartRow
-            title={"PastingECG & ST_Slope"}
+            title={"RestingECG & ST_Slope"}
             value={predictionData.restingECGAndSt_Slope}
             minValue={-2}
             maxValue={2}
