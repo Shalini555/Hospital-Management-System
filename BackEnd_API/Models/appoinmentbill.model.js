@@ -8,14 +8,14 @@ let appoinmentBill = new Schema(
   {
     patientid: {
       required: true,
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref:'detection'
     },
     visitStatus: {
       required: true,
       type: String,
     },
     doctorid: {
-      required: true,
       type: String,
     },
     labReportid: {
@@ -32,13 +32,20 @@ let appoinmentBill = new Schema(
       required: true,
       type: String,
     },
+    appointmentType:{
+      required: false,
+      type: String,
+    },
     queueNumber: {
       type: Number,
     },
     totalPrice: {
-      required: true,
       type: Number,
     },
+    detectionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref:'detection'
+    }
   },
   {
     collection: "appoinmentBill",
