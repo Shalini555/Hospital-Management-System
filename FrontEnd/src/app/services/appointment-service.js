@@ -8,6 +8,20 @@ class AppointmentService {
     });
   }
 
+  static async updateAppointment({ data }) {
+    return await post({
+      path: `/appoinment/update-appointment`,
+      data,
+    });
+  }
+
+  static async placeNewUrgentAppointment({ data }) {
+    return await post({
+      path: `/appoinment/add-urgent`,
+      data,
+    });
+  }
+
   static async updateVisitStatus({ appointmentId }) {
     return await post({
       path: `/appoinment/updateVisitStatus/${appointmentId}`,
@@ -18,6 +32,18 @@ class AppointmentService {
   static async getAppointmentsByPatientId({ patientId }) {
     return await get({
       path: `/appoinment/patient/${patientId}`,
+    });
+  }
+
+  static async getAllAppointments() {
+    return await get({
+      path: `/appoinment`,
+    });
+  }
+
+  static async getUrgentAppointments() {
+    return await get({
+      path: `/appoinment/get-urgent`,
     });
   }
 

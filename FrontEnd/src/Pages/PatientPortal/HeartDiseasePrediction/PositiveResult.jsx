@@ -40,15 +40,40 @@ const PositiveResult = ({ urgentStatus }) => {
   const [doctor, setDoctor] = useState(null);
   const [bed, setBed] = useState(null);
   const patient = useSelector((state) => state.patient);
+  const appointmentId = useSelector(
+    (state) => state.heartDiseasePrediction.appointmentId
+  );
+  const appointmentDetails = useSelector(
+    (state) => state.placeAppointment
+  );
+  const detectionId = useSelector(
+    (state) => state.placeAppointment.detectionId
+  );
+  const userType = useSelector(
+    (state) => state.login.userType
+  );
 
   const allocateDoctor = useCallback(async () => {
     setDoctor(null);
     try {
-      const responseBody = await DoctorService.autoAllocateDoctor({
-        patientid: patient._id,
-        bookingDate: new Date().toISOString().split("T")[0],
-      });
+      let responseBody = {};
+      if (appointmentId) {
+        responseBody =
+          await DoctorService.autoAllocateDoctorForExistingAppointment({
+            patientid: patient._id,
+            bookingDate: new Date().toISOString().split("T")[0],
+          });
+      } else {
+        responseBody = await DoctorService.autoAllocateDoctor({
+          patientid: patient._id,
+          bookingDate: new Date().toISOString().split("T")[0],
+        });
+      }
+
       const { allocated_doc } = responseBody;
+      if (!allocated_doc) {
+        throw new Error("No doctors available");
+      }
       setDoctor(allocated_doc);
       return allocated_doc;
     } catch (error) {
@@ -60,7 +85,11 @@ const PositiveResult = ({ urgentStatus }) => {
         allowOutsideClick: false,
         allowEscapeKey: false,
       }).then(function () {
-        navigate("/patient-portal/landing");
+        if(userType === "patient"){
+          navigate("/patient-portal/landing");
+        }else{
+          navigate("/medical-officer-portal/view-appointments");
+        }
       });
       return;
     }
@@ -92,7 +121,7 @@ const PositiveResult = ({ urgentStatus }) => {
 
   const makeAllocation = useCallback(async () => {
     const allocatedDoctor = await allocateDoctor();
-    if (allocatedDoctor.doctorid) {
+    if (allocatedDoctor?.doctorid) {
       const allocatedBed = await allocateBed();
       if (allocatedBed) {
         return true;
@@ -117,16 +146,18 @@ const PositiveResult = ({ urgentStatus }) => {
 
     dispatch(
       placeAppointment({
+        detectionId: detectionId,
+        appointmentId: appointmentId,
         doctorid: doctor?.doctorid,
         patientid: patient._id,
         bookingDate: new Date().toISOString().split("T")[0],
-        type: "urgent",
+        type: "Urgent",
         fee: doctor?.fee,
         doctorAvailability: firstAvailableDay,
       })
     );
     navigate("/patient-portal/heart-disease-prediction/payment");
-  }, [navigate, dispatch, doctor, patient]);
+  }, [dispatch, appointmentId, doctor, patient._id, navigate]);
 
   if (urgentStatus) {
     return (
@@ -216,9 +247,11 @@ const PositiveResult = ({ urgentStatus }) => {
             fontWeight: "bold",
           }}
           onClick={() =>
+           {
+            dispatch(placeAppointment({...appointmentDetails, type:"Not-Urgent"}))
             navigate(
               "/patient-portal/channel-doctor/step-01?speciality=Cardiologist"
-            )
+            )}
           }
         >
           Channel Doctor

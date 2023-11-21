@@ -12,16 +12,23 @@ const Actions = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const patientId = useSelector((state) => state.patient._id);
+    const userType = useSelector(state=>state.login.userType);
     const handleLogoutClick = useCallback(async () => {
         console.log("logout");
         try {
-          const logoutResponse = await PatientService.logout({ patientId });
-          const { message } = logoutResponse;
-          if (message === "Logout successful") {
-            dispatch(logout());
+          if(userType === "patient"){
+            const logoutResponse = await PatientService.logout({ patientId });
+            const { message } = logoutResponse;
+            if (message === "Logout successful") {
+              dispatch(logout());
+              showSystemAlert("You have successfully logged out", "success");
+              navigate("/patient-login");
+            }
+          }else{
             showSystemAlert("You have successfully logged out", "success");
-            navigate("/patient-login");
+            navigate("/medical-officer-login");
           }
+        
         } catch (error) {
           console.log(error);
           showSystemAlert("An error occured while loggin out", "error");
@@ -34,7 +41,12 @@ const Actions = () => {
         top: 20,
         right: 60
       }} title="Go to home" onClick={()=>{
-        navigate('/patient-portal/landing')
+        if(userType === "patient"){
+          navigate('/patient-portal/landing')
+        }else{
+          navigate("/medical-officer-portal/view-appointments");
+        }
+       
       }}>
             <Home />
       </IconButton>
