@@ -122,7 +122,20 @@ const ViewStatGraph = ({ isOpen, setIsOpen, predictionData }) => {
             <p>
               {" "}
               Prediction Result :{" "}
-              <span style={{color:predictionData.label === "true" ? "#E93232" : "#59C169"}}>{predictionData.label === "true" ? "Positive" : "Negative"}</span>
+              <span
+                style={{
+                  color:
+                    predictionData.label === "true" ? "#E93232" : "#59C169",
+                }}
+              >
+                {predictionData.label === "true"
+                  ? `Positive ( accuracy: ${
+                      parseFloat(predictionData?.accuracy ?? 0).toFixed(4) * 100
+                    } %)`
+                  : `Negative( accuracy: ${
+                      parseFloat(predictionData?.accuracy ?? 0).toFixed(4) * 100
+                    } %)`}
+              </span>
             </p>
           </Box>
 
@@ -143,7 +156,7 @@ const ViewStatGraph = ({ isOpen, setIsOpen, predictionData }) => {
 
         <Box>
           <ChartRow
-            title={"ST_Slope"}
+            title={"ST_SLOPE"}
             value={predictionData.sT_Slope}
             minValue={-2}
             maxValue={2}
@@ -204,12 +217,13 @@ const ViewStatGraph = ({ isOpen, setIsOpen, predictionData }) => {
           />
           <ChartRow
             title={"FastingBS"}
+            numericTitlePart={"(0.00)"}
             value={predictionData.fastingBS}
             minValue={-2}
             maxValue={2}
           />
           <ChartRow
-            title={"RestingECG & ST_Slope"}
+            title={"PastingECG & ST_Slope"}
             value={predictionData.restingECGAndSt_Slope}
             minValue={-2}
             maxValue={2}
