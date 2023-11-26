@@ -97,9 +97,9 @@ const Step04 = () => {
               label="ST Slope"
               onChange={handleStSlopeChange}
             >
-              <MenuItem value={"Up"}>Upsloping</MenuItem>
-              <MenuItem value={"Flat"}>Flat</MenuItem>
-              <MenuItem value={"Down"}>Downsloping</MenuItem>
+              <MenuItem value={"2"}>Upsloping</MenuItem>
+              <MenuItem value={"1"}>Flat</MenuItem>
+              <MenuItem value={"0"}>Downsloping</MenuItem>
             </Select>
           </FormControl>
 
@@ -120,8 +120,8 @@ const Step04 = () => {
               label="Exercise angina"
               onChange={handleExerciseAnginaChange}
             >
-              <MenuItem value={"Y"}>Yes</MenuItem>
-              <MenuItem value={"N"}>No</MenuItem>
+              <MenuItem value={"1"}>Yes</MenuItem>
+              <MenuItem value={"0"}>No</MenuItem>
             </Select>
           </FormControl>
 
