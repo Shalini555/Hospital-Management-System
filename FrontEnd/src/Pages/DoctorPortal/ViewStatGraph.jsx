@@ -140,7 +140,7 @@ const ViewStatGraph = ({ isOpen, setIsOpen, predictionData }) => {
                       parseFloat(predictionData?.accuracy ?? 0) * 100
                     ).toFixed(2)} %)`
                   : `Negative( accuracy: ${(
-                      parseFloat(predictionData?.accuracy ?? 0) * 100
+                      parseFloat(1 - predictionData?.accuracy ?? 0) * 100
                     ).toFixed(2)} %)`}
               </span>
             </p>
